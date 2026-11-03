@@ -7,7 +7,7 @@ const mongoose = require('mongoose');   // tambahkan di antara require lainnya
 const logger = require('./middlewares/logger');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 
-const parkingRecordsroutes = require('./routes/parkingRecordsroutes');
+const PengelolaanZakatroutes = require('./routes/PengelolaanZakatroutes');
 const kendaraanRoutes = require('./routes/kendaraanroutes');
  
 const app = express();
@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 // ---------- Route per modul ----------
-app.use('/parking-records', parkingRecordsroutes);
+app.use('/zakat', PengelolaanZakatroutes);
 app.use('/kendaraan', kendaraanRoutes);
 
 // ---------- Handler 404 dan error handler (paling bawah) ----------
