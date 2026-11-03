@@ -3,7 +3,7 @@ const { errorHttp } = require('../middlewares/errorHandler');
 const LIMIT_DEFAULT = 10;
 const LIMIT_MAKS = 50;
 const FIELD_SORT = ['noTransaksi', 'namaMuzakki', 'jumlah', 'jenis','createdAt'];
-const FIELD_BOLEH_DIPILIH = ['platNomor', 'waktuMasuk', 'waktuKeluar', 'biaya', 'kendaraan', 'kendaraanId'];
+const FIELD_BOLEH_DIPILIH = ['NoTransaksi', 'namaMuzakki', 'jumlah', 'jenis', 'kontak', 'amailId'];
 
 function angkaAman(nilai, bawaan, min, maks) {
   const n = parseInt(nilai, 10);
@@ -12,9 +12,9 @@ function angkaAman(nilai, bawaan, min, maks) {
 }
 
 exports.create = async (req, res) => {
-    const {platNomor, waktuMasuk, waktuKeluar, biaya,kendaraan, kendaraanId } = req.body;
-    const parkingRecord = await parkingRecords.create({ platNomor, waktuMasuk, waktuKeluar, biaya, kendaraan, kendaraanId });
-    res.status(201).json(parkingRecord);
+    const {noTransaksi, namaMuzakki, jumlah, jenis,kontak, amailId } = req.body;
+    const PengelolaanZakat = await PengelolaanZakat.create({ noTransaksi, namaMuzakki, jumlah, jenis,kontak, amailId });
+    res.status(201).json(PengelolaanZakat);
 };
 
 exports.getAll = async (req, res) => {
@@ -48,7 +48,7 @@ exports.getAll = async (req, res) => {
     select = fields.join(' ');
   }
 
-    const query = parkingRecords.find(filter)
+    const query = PengelolaanZakat.find(filter)
     .select(select)
     .sort({ [sortField]: arah, _id: 1 })
     .skip((page - 1) * limit)
@@ -66,13 +66,13 @@ exports.getAll = async (req, res) => {
 };
 
 exports.getById = async (req, res) => {
-  const data = await parkingRecords.findById(req.params.id).populate('kendaraanId');
+  const data = await PengelolaanZakat.findById(req.params.id).populate('mailId');
   if (!data) throw errorHttp(404, 'Data tidak ditemukan');
   res.json(data);
 };
 
 exports.update = async (req, res) => {
-  const data = await parkingRecords.findByIdAndUpdate(
+  const data = await PengelolaanZakat.findByIdAndUpdate(
     req.params.id,
     req.body,
     { returnDocument: 'after', runValidators: true }
@@ -82,7 +82,7 @@ exports.update = async (req, res) => {
 };
 
 exports.remove = async (req, res) => {
-  const data = await parkingRecords.findByIdAndDelete(req.params.id);
+  const data = await PengelolaanZakat.findByIdAndDelete(req.params.id);
   if (!data) throw errorHttp(404, 'Data tidak ditemukan');
   res.status(204).send();
 };

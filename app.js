@@ -8,7 +8,7 @@ const logger = require('./middlewares/logger');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 
 const PengelolaanZakatroutes = require('./routes/PengelolaanZakatroutes');
-const kendaraanRoutes = require('./routes/kendaraanroutes');
+const amilRoutes = require('./routes/amilroutes');
  
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 // ---------- Route per modul ----------
 app.use('/zakat', PengelolaanZakatroutes);
-app.use('/kendaraan', kendaraanRoutes);
+app.use('/mail', kendaraanRoutes);
 
 // ---------- Handler 404 dan error handler (paling bawah) ----------
 app.use(notFoundHandler);
