@@ -1,9 +1,10 @@
 {
   "dependencies": {
-    "express": "^5.3.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "expres": "^0.0.5",
+    "express": "^5.3.0",
+    "mongoose": "^9.11.4"
   },
   "name": "uts_raihan_2428240156",
   "version": "1.0.0",

@@ -1,23 +1,24 @@
 const mongoose = require('mongoose');
 
 //schema untuk embedding data kendaraan
-const kendaraanSchema = new mongoose.Schema({
-  kendaraanId: { type: mongoose.Schema.Types.ObjectId, ref: 'Kendaraan' },
-  jenisKendaraan: String,
-  warna: String,
+const amilSchema = new mongoose.Schema({
+  amilId: { type: mongoose.Schema.Types.ObjectId, ref: 'amil' },
+  telpon: String,
+  alamat: String,
 }, { _id: false });
 
 // Schema utama catatan parkir
-const PengelolaanSchemma = new mongoose.Schema({
+const PengelolaanZakatSchemma = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   noTransaksi: String,
   namaMuzakki: String,
   jumlah: Number,
-  jumlah: { type: Number, default: 0 },
+  jenis:String,
+  kontak:   {telepon: String, alamat: String },
 
-  kendaraan: {  type: kendaraanSchema, required: false },
-  kendaraanId: { type: mongoose.Schema.Types.ObjectId, ref: 'Kendaraan' },
+  amil: {  type: amilSchema, required: false },
+  amilId: { type: mongoose.Schema.Types.ObjectId, ref: 'amil' },
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('ParkingRecord', parkingRecordsSchema);
+module.exports = mongoose.model('PengelolaanZakat', PengelolaanZakatSchemma);

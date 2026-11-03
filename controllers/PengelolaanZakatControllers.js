@@ -2,7 +2,7 @@ const PengelolaanZakat = require('../models/PengelolaanZakatModel');
 const { errorHttp } = require('../middlewares/errorHandler');
 const LIMIT_DEFAULT = 10;
 const LIMIT_MAKS = 50;
-const FIELD_SORT = ['platNomor', 'waktuMasuk', 'waktuKeluar', 'createdAt'];
+const FIELD_SORT = ['noTransaksi', 'namaMuzakki', 'jumlah', 'jenis','createdAt'];
 const FIELD_BOLEH_DIPILIH = ['platNomor', 'waktuMasuk', 'waktuKeluar', 'biaya', 'kendaraan', 'kendaraanId'];
 
 function angkaAman(nilai, bawaan, min, maks) {
