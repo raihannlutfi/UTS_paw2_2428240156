@@ -8,7 +8,7 @@ const logger = require('./middlewares/logger');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 
 const PengelolaanZakatroutes = require('./routes/PengelolaanZakatroutes');
-const amilRoutes = require('./routes/amilroutes');
+const amilRoutes = require('./routes/amilRoutes');
  
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,14 +27,14 @@ app.get('/', (req, res) => {
 });
 
 // ---------- Route per modul ----------
-app.use('/zakat', PengelolaanZakatroutes);
-app.use('/mail', kendaraanRoutes);
+app.use('/PengelolaanZakat', PengelolaanZakatroutes);
+app.use('/amil', amilRoutes);
 
 // ---------- Handler 404 dan error handler (paling bawah) ----------
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.DB_URI)
   .then(() => {
     console.log('Terhubung ke MongoDB');
     app.listen(PORT, () => console.log(`Server berjalan di http://localhost:${PORT}`));

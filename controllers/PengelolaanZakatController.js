@@ -22,9 +22,9 @@ exports.getAll = async (req, res) => {
   if (req.query.jenisKendaraan) {
     filter['jenisKendaraan'] = String(req.query.jenisKendaraan).trim();
   }
-  if (req.query.kendaraan) {
-    const kendaraan = await Kendaraan.findOne({ kode: String(req.query.kendaraan).toUpperCase() });
-    filter.kendaraanId = kendaraan ? kendaraan._id : { $in: [] };
+  if (req.query.amil) {
+    const amil = await amil.findOne({ kode: String(req.query.amil).toUpperCase() });
+    filter.amailId = amil ? amil._id : { $in: [] };
   }
 
   const page = angkaAman(req.query.page, 1, 1, Number.MAX_SAFE_INTEGER);
@@ -56,11 +56,11 @@ exports.getAll = async (req, res) => {
 
   // populate() otomatis menambahkan kendaraanId ke hasil, jadi hanya dipanggil
   // bila kendaraanId memang diminta (atau bila tidak ada pemilihan field)
-  if (!select || select.split(' ').includes('kendaraanId')) {
+  if (!select || select.split(' ').includes('amilId')) {
     query.populate('kendaraanId', ' jenisKendaraan warna');
   }
 
-  const [data, total] = await Promise.all([query, parkingRecords.countDocuments(filter)]);
+  const [data, total] = await Promise.all([query, PengelolaanZakat.countDocuments(filter)]);
 
   res.json({ data, page, limit, total, totalPages: Math.ceil(total / limit) });
 };
