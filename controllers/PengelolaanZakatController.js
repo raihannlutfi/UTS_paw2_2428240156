@@ -69,7 +69,7 @@ exports.getAll = async (req, res) => {
 };
 
 exports.getById = async (req, res) => {
-  const data = await PengelolaanZakat.findById(req.params.id).populate('mailId');
+  const data = await PengelolaanZakat.findById(req.params.id).populate('amilId');
   if (!data) throw errorHttp(404, 'Data tidak ditemukan');
   res.json(data);
 };
