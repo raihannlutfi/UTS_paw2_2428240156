@@ -1,9 +1,11 @@
-const PengelolaanZakat = require('../models/PengelolaanZakatModel');
+const PengelolaanZakat = require('../models/PengelolaanZakatModel'); //Model utama
+const Amil = require('../models/amilModel'); // model Pendukung
 const { errorHttp } = require('../middlewares/errorHandler');
+
 const LIMIT_DEFAULT = 10;
 const LIMIT_MAKS = 50;
-const FIELD_SORT = ['noTransaksi', 'namaMuzakki', 'jumlah', 'jenis','createdAt'];
-const FIELD_BOLEH_DIPILIH = ['NoTransaksi', 'namaMuzakki', 'jumlah', 'jenis', 'kontak', 'amailId'];
+const FIELD_SORT = ['namaMuzakki','NoTransaksi','createdAt'];
+const FIELD_BOLEH_DIPILIH = ['NoTransaksi', 'namaMuzakki', 'jumlah', 'jenis', 'kontak', 'amailId','createdAt'];
 
 function angkaAman(nilai, bawaan, min, maks) {
   const n = parseInt(nilai, 10);
@@ -11,20 +13,21 @@ function angkaAman(nilai, bawaan, min, maks) {
   return Math.min(Math.max(n, min), maks);
 }
 
-exports.create = async (req, res) => {
-    const {noTransaksi, namaMuzakki, jumlah, jenis,kontak, amailId } = req.body;
-    const PengelolaanZakat = await PengelolaanZakat.create({ noTransaksi, namaMuzakki, jumlah, jenis,kontak, amailId });
-    res.status(201).json(PengelolaanZakat);
+exports.create = async (req, res, next) => {
+  try {
+    const data = await PengelolaanZakat.create(req.body);
+    res.status(201).json(data);
+  } catch (err) {
+    if (err.name === 'ValidationError') err.status = 400;
+    if (err.code === 11000) err.status = 409;
+    next(err);
+  }
 };
 
 exports.getAll = async (req, res) => {
   const filter = {};
-  if (req.query.jenisKendaraan) {
-    filter['jenisKendaraan'] = String(req.query.jenisKendaraan).trim();
-  }
-  if (req.query.amil) {
-    const amil = await amil.findOne({ kode: String(req.query.amil).toUpperCase() });
-    filter.amailId = amil ? amil._id : { $in: [] };
+  if (req.query.jenis) {
+    filter['jenis'] = String(req.query.jenis).trim(); // bukan subdocukemn seperti latihan
   }
 
   const page = angkaAman(req.query.page, 1, 1, Number.MAX_SAFE_INTEGER);
@@ -57,7 +60,7 @@ exports.getAll = async (req, res) => {
   // populate() otomatis menambahkan kendaraanId ke hasil, jadi hanya dipanggil
   // bila kendaraanId memang diminta (atau bila tidak ada pemilihan field)
   if (!select || select.split(' ').includes('amilId')) {
-    query.populate('kendaraanId', ' jenisKendaraan warna');
+    query.populate('amilId', 'kode nama');
   }
 
   const [data, total] = await Promise.all([query, PengelolaanZakat.countDocuments(filter)]);
